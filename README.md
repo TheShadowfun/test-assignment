@@ -1,7 +1,7 @@
 # Software Engineer Test Assignment implementation
 
 ## Overview
-This repository contains an implementation of the Software Engineer Test Assignment that enables managing customer accounts, multi-currency balances, and financial transactions. The application guarantees consistency and publishes all state mutations to RabbitMQ.
+This repository contains an implementation of the Software Engineer Test Assignment that enables managing customer accounts, multi-currency balances, and financial transactions. The application publishes all state mutations to RabbitMQ and has redundancy to protect against RabbitMQ or network downtime (assumes database connection is still available).
 
 ## Setup and Execution
 

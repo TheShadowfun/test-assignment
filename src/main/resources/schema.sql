@@ -1,10 +1,10 @@
-CREATE TABLE accounts (
+CREATE TABLE IF NOT EXISTS accounts (
                         id BIGSERIAL PRIMARY KEY,
                         customer_id BIGINT NOT NULL,
                         country VARCHAR(2) NOT NULL
 );
 
-CREATE TABLE balances (
+CREATE TABLE IF NOT EXISTS balances (
                         id BIGSERIAL PRIMARY KEY,
                         account_id BIGINT REFERENCES accounts(id),
                         currency VARCHAR(3) NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE balances (
                         UNIQUE(account_id, currency)
 );
 
-CREATE TABLE transactions (
+CREATE TABLE IF NOT EXISTS transactions (
                         id BIGSERIAL PRIMARY KEY,
                         account_id BIGINT REFERENCES accounts(id) NOT NULL,
                         amount NUMERIC(20, 2) NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE transactions (
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE outbox (
+CREATE TABLE IF NOT EXISTS outbox (
                         id BIGSERIAL PRIMARY KEY,
                         routing_key VARCHAR(255) NOT NULL,
                         payload TEXT NOT NULL,
