@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.henrikpeegel.test_assignment.mapper.TransactionMapper">
+
+    <insert id="insertTransaction" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO transactions (account_id, amount, currency, direction, description, balance_after)
+        VALUES (#{accountId}, #{amount}, #{currency}, #{direction}, #{description}, #{balanceAfter})
+    </insert>
+
+    <select id="findAllByAccountId" resultType="com.henrikpeegel.test_assignment.domain.Transaction">
+        SELECT
+            id, account_id AS accountId, amount, currency, direction, description, balance_after AS balanceAfter
+        FROM transactions
+        WHERE account_id = #{accountId}
+    </select>
+
+</mapper>

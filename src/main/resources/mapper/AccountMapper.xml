@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.henrikpeegel.test_assignment.mapper.AccountMapper">
+
+    <insert id="insertAccount" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO accounts (customer_id, country)
+        VALUES (#{customerId}, #{country})
+    </insert>
+
+    <resultMap id="AccountWithBalancesMap" type="com.henrikpeegel.test_assignment.domain.Account">
+        <id property="id" column="id"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="country" column="country"/>
+        <collection property="balances" ofType="com.henrikpeegel.test_assignment.domain.Balance">
+            <id property="id" column="balance_id"/>
+            <result property="currency" column="currency"/>
+            <result property="availableAmount" column="available_amount"/>
+        </collection>
+    </resultMap>
+
+    <select id="findById" resultMap="AccountWithBalancesMap">
+        SELECT
+            a.id, a.customer_id, a.country,
+            b.id AS balance_id, b.currency, b.available_amount
+        FROM accounts a
+        LEFT JOIN balances b ON a.id = b.account_id
+        WHERE a.id = #{id}
+    </select>
+
+</mapper>

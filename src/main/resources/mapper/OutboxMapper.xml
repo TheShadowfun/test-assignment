@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.henrikpeegel.test_assignment.mapper.OutboxMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO outbox (routing_key, payload, status)
+        VALUES (#{routingKey}, #{payload}, 'PENDING')
+    </insert>
+
+    <select id="findPending" resultType="com.henrikpeegel.test_assignment.domain.OutboxEntry">
+        SELECT id, routing_key AS routingKey, payload, status
+        FROM outbox
+        WHERE status = 'PENDING'
+        ORDER BY id ASC
+            LIMIT #{limit}
+    </select>
+
+    <update id="updateStatus">
+        UPDATE outbox SET status = #{status} WHERE id = #{id}
+    </update>
+
+    <delete id="deleteOldSentMessages">
+        DELETE FROM outbox WHERE status = 'SENT' AND created_at &lt; #{olderThan}
+    </delete>
+
+</mapper>

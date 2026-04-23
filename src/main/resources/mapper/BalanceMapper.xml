@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.henrikpeegel.test_assignment.mapper.BalanceMapper">
+
+    <insert id="insertBalances">
+        INSERT INTO balances (account_id, currency, available_amount)
+        VALUES
+        <foreach collection="list" item="balance" separator=",">
+            (#{balance.accountId}, #{balance.currency}, #{balance.availableAmount})
+        </foreach>
+    </insert>
+
+    <select id="findByAccountId" resultType="com.henrikpeegel.test_assignment.domain.Balance">
+        SELECT * FROM balances WHERE account_id = #{accountId}
+    </select>
+
+    <select id="findBalanceForUpdate" resultType="com.henrikpeegel.test_assignment.domain.Balance">
+        SELECT * FROM balances
+        WHERE account_id = #{accountId} AND currency = #{currency}
+        FOR UPDATE
+    </select>
+
+    <update id="updateBalance">
+        UPDATE balances
+        SET available_amount = #{availableAmount}
+        WHERE id = #{id}
+    </update>
+
+</mapper>
